@@ -1,62 +1,78 @@
+var positionDiv = document.createElement("div");
+var rockBtn = document.createElement("button");
+var paperBtn = document.createElement("button");
+var scissorsBtn = document.createElement("button")
+var tallyScore = document.createElement("text")
+var scoreValPlayer = 0;
+var scoreValComp = 0;
+positionDiv.style.cssText = 'height: 400px';
+tallyScore.innerText = "Player Score: " + scoreValPlayer + "\n Computer Score: " + scoreValComp;
+tallyScore.style.cssText = 'position: fixed; top: 20px; left: 34%'
+rockBtn.innerHTML = "rock";
+rockBtn.style.cssText ='position: fixed; top: 60px; left: 38%'
+paperBtn.innerHTML = "paper";
+paperBtn.style.cssText='position: fixed; top: 60px; left: 47%'
+scissorsBtn.innerHTML = "scissors";
+scissorsBtn.style.cssText='position: fixed; top: 60px; left: 57%'
+positionDiv.appendChild(tallyScore);
+positionDiv.appendChild(rockBtn);
+positionDiv.appendChild(paperBtn);
+positionDiv.appendChild(scissorsBtn);
+document.body.appendChild(positionDiv);
+
+var buttonList = document.body.querySelectorAll('button');
 function computerPlay(){
     rpsArray = ["rock", "paper", "scissors"];
     return rpsArray[Math.floor(Math.random() * rpsArray.length)];
 }
-function playRound(computerthrow, playerthrow){
-    if(computerthrow == "rock"){
-        switch(playerthrow){
+function playRound(computerThrow, playerThrow){
+    if(computerThrow == "rock"){
+        switch(playerThrow){
             case "rock":
-                return 0;
+                return "Tie";
             case "paper":
-                return 1;
+                return "Win";
             case "scissors":
-                return -1;
+                return "Lose";
         }
     }
-    else if(computerthrow == "paper"){
-        switch(playerthrow){
+    else if(computerThrow == "paper"){
+        switch(playerThrow){
             case "rock":
-                return -1;
+                return "Lose";
             case "paper":
-                return 0;
+                return "Tie";
             case "scissors":
-                return 1;
+                return "Win";
         }
     }
-    else if(computerthrow == "scissors"){
-        switch(playerthrow){
+    else if(computerThrow == "scissors"){
+        switch(playerThrow){
             case "rock":
-                return 1;
+                return "Win";
             case "paper":
-                return -1;
+                return "Lose";
             case "scissors":
-                return 0;
+                return "Tie";
         }
 
     }
 }
-function game(){
-    keepGoing = 1
-    while(keepGoing == 1){
-        playerWin = 0;
-        computerWin = 0;
-        playerMessage = "What do you throw: Rock, Paper, or Scissors?";
-        while(playerWin < 3 && computerWin < 3){
-            playerPlay = prompt(playerMessage).toLowerCase();
-            switch (playRound(computerPlay(),playerPlay)){
-                case 1:
-                    playerMessage = "You win this round! The score is: " + ++playerWin + " to " +  computerWin + "\n What do you throw: Rock, Paper, or Scissors?";
-                    break;
-                case 0:
-                    playerMessage = "You tied this round. The score is: " + playerWin + " to " + computerWin + "\n What do you throw: Rock, Paper, or Scissors?"
-                    break;
-                case -1:
-                    playerMessage = "You lost this round. The score is: " + playerWin + " to " + ++computerWin + "\n What do you throw: Rock, Paper, or Scissors?"
-                    break;
-            }
+
+buttonList.forEach((gameButton) =>{
+    gameButton.addEventListener('click', (e) => {
+        var roundResult = (playRound(computerPlay(),(e.target.innerHTML)));
+        switch(roundResult){
+            case "Win":
+                scoreValPlayer = scoreValPlayer + 1;
+                break;
+            case "Tie":
+                break;
+            case "Lose":
+                scoreValComp = scoreValComp + 1;
+                break;
         }
-        playerMessage = "The game is over. The final score was " + playerWin + " to " + computerWin + "\n Enter 1 to keep playing, or anything else to stop."
-        keepGoing = prompt(playerMessage)
-    }
-}
-game();
+    tallyScore.innerText = "Player Score: " + scoreValPlayer + "\n Computer Score: " + scoreValComp;
+    });
+});
+    
